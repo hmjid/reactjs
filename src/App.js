@@ -1,24 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
+import React ,{useState , useEffect} from 'react';
 import './App.css';
 
 function App() {
+  const [ count , setCount] =useState(0);
+  const [fruit, setFruit] = useState('banana');
+  const [todos, setTodos] = useState([{ text: 'Learn Hooks' }]);
+  const [tea, setTtea] = useState({ text: 'Learn Hooks' });
+  useEffect(() => {document.title=`当前数目为${count}`} )
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      当前数目为{count}
+      <div>
+        <button onClick = { () => setCount(count+1) } >+</button>
+        <span> {count} </span>
+        <button onClick = { () => setCount(count-1) } >-</button>
+      </div>
+      {fruit} <br />
+      {todos[0].text} <br />
+      {tea.text}
     </div>
   );
 }
