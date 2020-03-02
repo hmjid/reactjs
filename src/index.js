@@ -1,12 +1,80 @@
-import React from 'react';
+
+import React, { Component, createContext } from 'react'
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const {
+  Provider,
+  Consumer: CounterConsumer
+} = createContext()
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+class CounterProvider extends Component {
+  constructor() {
+    super()
+    this.state = {
+      count: 100
+    }
+  }
+  decrementCount = () => {
+    this.setState({
+      count:this.state.count+1
+    })
+  }
+  incrementCount = () => {
+    this.setState({
+      count:this.state.count-1
+    })
+  }
+  render() {
+    return (
+      <Provider value = { {
+        count : this.state.count,x:4,
+        Ondecrement:this.decrementCount,
+        Onincrement:this.incrementCount
+        } }>
+        {this.props.children}
+        </Provider>
+    )
+  }
+}
+class Counter extends Component {
+  render() {
+    return (
+      <CounterConsumer> 
+        {
+          ({count}) => {
+          return <span>{count}</span>
+          }
+        }
+         </CounterConsumer>
+    )
+  }
+}
+class CountBtn extends Component {
+  render() {
+    return (
+      <CounterConsumer> 
+        {
+          ({Ondecrement,Onincrement}) => {
+            const handClick = this.props.type==='decrement' ? Ondecrement : Onincrement
+            return <button onClick = {handClick}>{this.props.type}</button>
+          }
+        }
+         </CounterConsumer>
+    )
+  }
+}
+export default class App extends Component {
+  render() {
+    return (
+      <>
+        <CountBtn type="decrement" />
+        <Counter />
+        <CountBtn type="increment" />
+      </>
+    )
+  }
+}
+
+ReactDOM.render(<CounterProvider><App /></CounterProvider>, document.getElementById('root'));
+
